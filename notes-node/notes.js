@@ -5,6 +5,12 @@ const _ = require('lodash');
 const extfs = require('extfs');
 const R = require('ramda');
 
+// in order to add a note, I need to first create the json file in which
+// I am storing them;
+// w+ flag: create for wr/ open for wr + empty file;
+// r+ flag: open for wr;
+// I replace the existing array of notes with a new one, which contains
+// the new note
 const addNote = (title, body) => {
   console.log('Adding note', title + ' ' + body);
 
@@ -31,6 +37,7 @@ const addNote = (title, body) => {
   fs.closeSync(fd);
 };
 
+// lists all notes
 const getAll = () => {
   console.log('Getting all notes \n');
 
@@ -46,6 +53,7 @@ const getAll = () => {
   }
 };
 
+// find and display a specific note by title
 const getNote = (title) => {
   console.log('Getting note', title);
 
@@ -59,6 +67,7 @@ const getNote = (title) => {
   });
 };
 
+// find and remove note by title
 const removeNote = (title) => {
   console.log('Removing note', title);
 
@@ -84,6 +93,7 @@ const removeNote = (title) => {
   }
 };
 
+// clear notes list
 const clearNotes = () => {
   var fd = fs.openSync('notes.json', 'w+');
   fs.closeSync(fd);
