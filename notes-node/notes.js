@@ -1,7 +1,8 @@
 console.log('Notes file');
 
 const fs = require('fs');
-const _ = require('lodash')
+const _ = require('lodash');
+const extfs = require('extfs');
 
 const addNote = (title, body) => {
   console.log('Adding note', title + ' ' + body);
@@ -10,11 +11,24 @@ const addNote = (title, body) => {
     title,
     body,
   };
-  const fd = fs.openSync('notes.json', 'w+');
+  let notes = [];
+  let notesString = '';
 
-  const noteString = JSON.stringify(note);
+  if (extfs.isEmptySync('notes.json')) {
+    var fd = fs.openSync('notes.json', 'w+');
+  } else {
+    var fd = fs.openSync('notes.json', 'r+');
 
-  fs.writeFileSync(fd, noteString);
+    notesString = fs.readFileSync(fd);
+    notes = JSON.parse(notesString);
+  }
+
+  notes.push(note);
+  notesString = JSON.stringify(notes);
+  console.log('This is notes array ', notes);
+
+  fs.writeFileSync(fd, notesString);
+  fs.closeSync(fd);
 };
 
 const getAll = () => {

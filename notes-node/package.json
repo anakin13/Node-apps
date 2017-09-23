@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "extfs": "0.0.7",
     "lodash": "^4.17.4",
     "yargs": "^9.0.1"
   }
