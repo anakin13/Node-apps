@@ -3,6 +3,7 @@ console.log('Notes file');
 const fs = require('fs');
 const _ = require('lodash');
 const extfs = require('extfs');
+const R = require('ramda');
 
 const addNote = (title, body) => {
   console.log('Adding note', title + ' ' + body);
@@ -37,7 +38,10 @@ const getAll = () => {
   const notesString = fs.readFileSync('notes.json');
   const notesObj = JSON.parse(notesString);
 
-  console.log(notesObj);
+  // console.log(R.values(notesObj));
+  notesObj.forEach((note, key) => {
+    console.log(`Note ${key}\n title: ${note.title} \n body: ${note.body}`);
+  });
 };
 
 const getNote = (title) => {

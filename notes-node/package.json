@@ -11,6 +11,7 @@
   "dependencies": {
     "extfs": "0.0.7",
     "lodash": "^4.17.4",
+    "ramda": "^0.24.1",
     "yargs": "^9.0.1"
   }
 }
