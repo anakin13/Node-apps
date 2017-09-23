@@ -25,6 +25,9 @@ switch (command) {
   case 'remove':
     notes.removeNote(argv.title);
     break;
+  case 'clear':
+    notes.clearNotes();
+    break;
   default:
     break;
 }

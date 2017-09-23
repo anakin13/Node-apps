@@ -26,7 +26,6 @@ const addNote = (title, body) => {
 
   notes.push(note);
   notesString = JSON.stringify(notes);
-  console.log('This is notes array ', notes);
 
   fs.writeFileSync(fd, notesString);
   fs.closeSync(fd);
@@ -35,21 +34,59 @@ const addNote = (title, body) => {
 const getAll = () => {
   console.log('Getting all notes \n');
 
-  const notesString = fs.readFileSync('notes.json');
-  const notesObj = JSON.parse(notesString);
+  if (extfs.isEmptySync('notes.json')) {
+    console.log('There are no notes to list');
+  } else {
+    const notesString = fs.readFileSync('notes.json');
+    const notesObj = JSON.parse(notesString);
 
-  // console.log(R.values(notesObj));
-  notesObj.forEach((note, key) => {
-    console.log(`Note ${key}\n title: ${note.title} \n body: ${note.body}`);
-  });
+    notesObj.forEach((note, key) => {
+      console.log(`Note ${key}\n title: ${note.title} \n body: ${note.body}`);
+    });
+  }
 };
 
 const getNote = (title) => {
   console.log('Getting note', title);
+
+  const notesString = fs.readFileSync('notes.json');
+  const notesObj = JSON.parse(notesString);
+
+  notesObj.forEach((note, key) => {
+    if (note.title === title) {
+      console.log(`Note ${key}\n title: ${note.title} \n body: ${note.body}`);
+    }
+  });
 };
 
 const removeNote = (title) => {
   console.log('Removing note', title);
+
+  if (extfs.isEmptySync('notes.json')) {
+    throw new Error('There are no notes');
+  } else {
+    let notesString = fs.readFileSync('notes.json');
+    let notesObj = JSON.parse(notesString);
+
+    var fd = fs.openSync('notes.json', 'w+');
+
+    notesObj.forEach((note, key) => {
+      if (note.title === title) {
+        notesObj.splice(key, 1);
+        notesString = JSON.stringify(notesObj);
+        console.log('notesString ', notesString);
+
+        fs.writeFileSync(fd, notesString);
+      }
+    });
+
+    fs.closeSync(fd);
+  }
+};
+
+const clearNotes = () => {
+  var fd = fs.openSync('notes.json', 'w+');
+  fs.closeSync(fd);
 };
 
 module.exports = {
@@ -57,4 +94,5 @@ module.exports = {
   getAll,
   getNote,
   removeNote,
+  clearNotes,
 };
